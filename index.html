@@ -14,6 +14,7 @@
             --text: #333333;
             --accent: #2ecc71;
             --warning: #e67e22;
+            --danger: #e74c3c;
         }
 
         * { box-sizing: border-box; }
@@ -68,6 +69,17 @@
         
         .master-controls { margin-top: 25px; text-align: center; }
         .setup-btn { background: #e0e0e0; padding: 12px; border: none; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; }
+        
+        .firepower-badge {
+            background: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-left: 6px;
+        }
     </style>
 </head>
 <body>
@@ -84,53 +96,75 @@
 </div>
 
 <script>
-    // Automated Chapter Syllabus Rotator (GSEB English Medium)
-    const chemistrySyllabus = [
-        "Ch 1: Chemical Reactions and Equations (Types & Balancing)",
-        "Ch 1: Chemical Reactions (Corrosion, Rancidity & Activity Boxes)",
-        "Ch 2: Acids, Bases and Salts (Properties & pH Scale)",
-        "Ch 2: Acids, Bases and Salts (Important Chemical Compounds)",
-        "Ch 3: Metals and Non-metals (Physical & Chemical Properties)",
-        "Ch 3: Metals and Non-metals (Extraction & Metallurgy)",
-        "Ch 4: Carbon and its Compounds (Bonding & Homologous Series)",
-        "Ch 4: Carbon and its Compounds (Functional Groups & Saponification)"
+    // Social Science Rotator Pool - Heavyweight history timelines/maps run with double occurrence frequency
+    const socialScienceSyllabus = [
+        { ch: "SS Ch 20", title: "Social Problems & Challenges", task: "Analyze structural differences between Rebellion and Terrorism metrics.", highFirepower: false },
+        { ch: "SS Ch 20", title: "Social Problems (Casteism Focus)", task: "🔥 CRITICAL FOCUS: Study constitutional articles (Art 17, 25, 46) addressing untouchability and minority protections.", highFirepower: true },
+        { ch: "SS Ch 1", title: "Heritage of India", task: "Review cultural assets, Aryan vs Dravidian ancestral pathways, and historical geography parameters.", highFirepower: false },
+        { ch: "SS Ch 1", title: "Heritage (Map Identification)", task: "🔥 MAP ISOLATION PRACTICE: Mark out core ancient cultural clusters and local Gujarat heritage sites on your baseline physical grid.", highFirepower: true },
+        { ch: "SS Ch 13", title: "Manufacturing Industries", task: "Track economic outputs of cotton textile clusters, Silicon Valley developments, and environmental controls.", highFirepower: false },
+        { ch: "SS Ch 17", title: "Poverty & Unemployment Challenges", task: "🔥 CHRONOLOGY / DATA LOCK: Memorize BPL qualitative benchmarks, Maa Annapurna Yojna data points, and alleviation strategy features.", highFirepower: true },
+        { ch: "SS Ch 15", title: "Economic Development", task: "Differentiate between Market Systems, Socialist Systems, and India's Mixed framework.", highFirepower: false },
+        { ch: "SS Ch 21", title: "Social Change", task: "Study legal awareness value setups, consumer protection laws, and structural lifestyle impacts.", highFirepower: false }
+    ];
+
+    // Mathematics Rotator Pool - Deeply adjusted to repeat proofs, word-problem mechanics, and compound shapes frequently
+    const mathSyllabus = [
+        { ch: "Math Ch 1", title: "Real Numbers (Irrationality Proofs)", task: "🔥 THEOREM ISOLATION: Write down full contradiction proofs for √5 and 3+2√5 step-by-step. Focus on coprime variables logic.", highFirepower: true },
+        { ch: "Math Ch 2", title: "Polynomials (Zeroes & Coefficients)", task: "Find zeroes of quadratic expressions and map out coordinate points crossing the X-axis visually.", highFirepower: false },
+        { ch: "Math Ch 12", title: "Surface Areas & Volumes (Combined Solids)", task: "🔥 WORD PROBLEM ALGEBRA: Deconstruct word problems combining hemispheres capped onto cylinder shafts. Isolate radius variable tracking.", highFirepower: true },
+        { ch: "Math Ch 12", title: "Surface Areas & Volumes (Mass Equations)", task: "🔥 HEAVY CALCULATION: Solve multi-step cylinder surmounting problems (e.g., iron pole problems) and process 1cm³ = 8g conversions.", highFirepower: true },
+        { ch: "Math Ch 11", title: "Areas Related to Circles (Sectors)", task: "Apply θ/360 × πR² equations to calculate minor vs major sweeping designs.", highFirepower: false },
+        { ch: "Math Ch 13", title: "Statistics (Mean Strategies)", task: "Solve grouped dataset averages using Direct, Assumed Mean, or Step-Deviation frameworks.", highFirepower: false },
+        { ch: "Math Ch 13", title: "Statistics (Median Curve Ogives)", task: "🔥 METHOD PRACTICE: Plot cumulative frequency grids and determine precise median values from graph intersection planes.", highFirepower: true },
+        { ch: "Math Ch 14", title: "Probability", task: "Compute elementary outcome fractions for fair coin tosses, unbiased dice rolls, and standard card groups.", highFirepower: false }
+    ];
+
+    // Science Rotator Pool - Highly reinforced for Organic Nomenclature, Physics sign conventions, and complex Bio structures
+    const scienceSyllabus = [
+        { ch: "Sci Ch 4", title: "Carbon & Compounds (Nomenclature)", task: "🔥 ORGANIC ISOLATION: Draw structural formula maps for functional groups (Alcohols, Aldehydes, Ketones). Practice naming conventions.", highFirepower: true },
+        { ch: "Sci Ch 1", title: "Chemical Reactions & Equations", task: "Practice balancing intricate skeletal equations and classifying redox pathways.", highFirepower: false },
+        { ch: "Sci Ch 9", title: "Light (Mirror/Lens Formula Sign Conventions)", task: "🔥 PHYSICS NUMERICAL PRACTICE: Practice object distance (u) and image distance (v) signs. Memorize lens magnification metrics.", highFirepower: true },
+        { ch: "Sci Ch 9", title: "Light (Ray Diagrams)", task: "🔥 PHYSICS DIAGRAM DRAWING: Sketch path geometries for concave mirrors and convex lenses at different focal intervals.", highFirepower: true },
+        { ch: "Sci Ch 5", title: "Life Processes (Human Anatomy Pathways)", task: "🔥 BIOLOGY ISOLATION: Trace complete biochemical pathways through the Human Circulatory loop and structural Nephron filter units.", highFirepower: true },
+        { ch: "Sci Ch 2", title: "Acids, Bases & Salts", task: "Review chemical properties of salts, pH variances, and production mechanics for Baking Soda and Plaster of Paris.", highFirepower: false },
+        { ch: "Sci Ch 11", title: "Electricity (Circuit Numericals)", task: "🔥 PHYSICS CALCULATIONS: Solve series vs parallel equivalent resistance networks using Ohm's Law and Joule's Heating equation.", highFirepower: true },
+        { ch: "Sci Ch 6", title: "Control & Coordination", task: "Trace reflex arcs, map out functional human brain sections, and memorize key endocrine hormones.", highFirepower: false }
     ];
 
     const languageSyllabus = [
-        "Gujarati: Prose Chapter Reading & Vocabulary",
-        "Gujarati: Vyakaran (Jodani, Samas & Sandhi)",
-        "Gujarati: Poetry Analysis & Author Introduction",
-        "Hindi: Nibandh & Patra Lekhan Formats",
-        "Hindi: Prose Chapter Summary & Text Exercises",
-        "Hindi: Vyakaran & Muhavre Practice"
+        "Languages: Complete reading and structural comprehension tracking for your scheduled textbook prose items.",
+        "Languages / Vyakaran: Review targeted composition formats, structural punctuation rules, and prose summary writeups."
     ];
 
     const generalSchedule = [
-        { id: "morning", start: "06:00", end: "07:15", label: "Morning Session" },
-        { id: "tuition1", start: "15:00", end: "16:30", label: "Tuition Batch 1" },
-        { id: "tuition2", start: "17:00", end: "19:00", label: "Tuition Batch 2" },
-        { id: "selfstudy", start: "19:45", end: "21:00", label: "Self-Study Practice" },
-        { id: "review", start: "21:45", end: "22:45", label: "Tuition Review & Homework" }
+        { id: "morning", start: "06:00", end: "07:15", label: "Morning Learning Session" },
+        { id: "tuition1", start: "15:00", end: "16:30", label: "Tuition Afternoon Batch" },
+        { id: "tuition2", start: "17:00", end: "19:00", label: "Tuition Evening Batch" },
+        { id: "selfstudy", start: "19:45", end: "21:00", label: "Self-Study Focus Matrix" },
+        { id: "review", start: "21:45", end: "22:45", label: "Night Review & Backlog Resolution" }
     ];
 
-    // State Tracking
-    let appState = JSON.parse(localStorage.getItem('gseb_smart_state')) || {
-        chemIndex: 0,
+    // Persistent State Engine Tracking Parameters
+    let appState = JSON.parse(localStorage.getItem('gseb_smart_state_v2')) || {
+        ssIndex: 0,
+        mathIndex: 0,
+        scienceIndex: 0,
         langIndex: 0,
         completedToday: {},
         pushedTasks: {}
     };
 
     function saveState() {
-        localStorage.setItem('gseb_smart_state', JSON.stringify(appState));
+        localStorage.setItem('gseb_smart_state_v2', JSON.stringify(appState));
     }
 
     function initPermissions() {
         if ("Notification" in window) {
             Notification.requestPermission().then(perm => {
                 if(perm === "granted") {
-                    speak("Smart voice and smartwatch notifications enabled.");
-                    new Notification("GSEB Assistant", { body: "Automation active until March examinations!" });
+                    speak("Tracking matrix reconfigured. High firepower optimization and isolation slots are now online.");
+                    new Notification("GSEB Matrix Adjusted", { body: "Weak points isolated with 2x frequency loops!" });
                 }
             });
         }
@@ -147,11 +181,10 @@
 
     function checkTimers() {
         const now = new Date();
-        const currentTimeString = now.toTimeString().substring(0, 5); // "HH:MM"
-        document.getElementById('dateDisplay').innerText = now.toDateString() + " | Active Monitoring";
+        const currentTimeString = now.toTimeString().substring(0, 5);
+        document.getElementById('dateDisplay').innerText = now.toDateString() + " | Firepower Optimization Live";
 
         generalSchedule.forEach(slot => {
-            // Trigger confirmation prompt right at the end of a session window
             if (currentTimeString === slot.end && !appState.completedToday[slot.id]) {
                 triggerWindowPrompt(slot);
             }
@@ -159,45 +192,72 @@
     }
 
     function triggerWindowPrompt(slot) {
-        const textMsg = `Time is up for your ${slot.label}. Did you complete this session's syllabus target?`;
+        const textMsg = `Tracking block finished for ${slot.label}. Did you finish the allocated blueprint targets?`;
         speak(textMsg);
         
         if ("Notification" in window && Notification.permission === "granted") {
-            new Notification(`${slot.label} Ended`, { body: "Tap to confirm if completed or push forward." });
+            new Notification(`${slot.label} Block Concluded`, { body: "Log progress data to advance syllabus tracks cleanly." });
         }
     }
 
     function handleTaskAction(slotId, success) {
         if (success) {
             appState.completedToday[slotId] = true;
+            
             if (slotId === "morning") {
-                // Cycle index to change topic automatically tomorrow
-                appState.chemIndex = (appState.chemIndex + 1) % chemistrySyllabus.length;
                 appState.langIndex = (appState.langIndex + 1) % languageSyllabus.length;
             }
+            if (slotId === "selfstudy") {
+                // Shift indices forward on check-off
+                appState.ssIndex = (appState.ssIndex + 1) % socialScienceSyllabus.length;
+                appState.mathIndex = (appState.mathIndex + 1) % mathSyllabus.length;
+                appState.scienceIndex = (appState.scienceIndex + 1) % scienceSyllabus.length;
+            }
+            
             delete appState.pushedTasks[slotId];
-            speak("Excellent progress. Target archived. Next topic queued for tomorrow.");
+            speak("Milestone captured. Moving to next strategic node.");
         } else {
-            // Push task down to night block or post-session
-            appState.pushedTasks[slotId] = "Pushed to review block";
-            speak("Task logged as incomplete. Pushed down to the late night review slot.");
+            appState.pushedTasks[slotId] = true;
+            speak("Session logged as incomplete. Shifting structural targets to the late night recovery block.");
         }
         saveState();
         renderActiveUI();
     }
 
     function getSlotDynamicContent(slotId) {
+        const currentSS = socialScienceSyllabus[appState.ssIndex];
+        const currentMath = mathSyllabus[appState.mathIndex];
+        const currentSci = scienceSyllabus[appState.scienceIndex];
+        
         switch(slotId) {
             case "morning":
-                return `<strong>Today's Automated Targets:</strong><br>• Chemistry: ${chemistrySyllabus[appState.chemIndex]}<br>• Languages: ${languageSyllabus[appState.langIndex]}`;
+                return `<strong>Early Language Track:</strong><br>• ${languageSyllabus[appState.langIndex]}`;
             case "tuition1":
-                return "Review notes taken dynamically during today's Hindi/Gujarati syllabus progression.";
+                return "Consolidate active equations and catalog template worksheets issued during your first batch.";
             case "tuition2":
-                return "Process Chemistry chemical properties and assignment items completed today.";
+                return "Structure note entries, review practice proofs, and complete assignments assigned in your evening classes.";
             case "selfstudy":
-                return "<strong>Today's Exercise Target:</strong> Solve 10 designated Textbook problems in Mathematics or review 1 Social Science Blueprint concept.";
+                return `<strong>Tonight's Strategic High-Firepower Split:</strong><br>
+                        <div style="margin-top:5px; padding-left:5px; border-left:3px solid #3498db;">
+                            🧬 <strong>${currentSci.ch}: ${currentSci.title}</strong> ${currentSci.highFirepower ? '<span class="firepower-badge">🔥 High Firepower</span>' : ''}<br><em>Isolated Objective:</em> ${currentSci.task}
+                        </div>
+                        <div style="margin-top:8px; padding-left:5px; border-left:3px solid #2ecc71;">
+                            📐 <strong>${currentMath.ch}: ${currentMath.title}</strong> ${currentMath.highFirepower ? '<span class="firepower-badge">🔥 High Firepower</span>' : ''}<br><em>Isolated Objective:</em> ${currentMath.task}
+                        </div>
+                        <div style="margin-top:8px; padding-left:5px; border-left:3px solid #e74c3c;">
+                            🌍 <strong>${currentSS.ch}: ${currentSS.title}</strong> ${currentSS.highFirepower ? '<span class="firepower-badge">🔥 High Firepower</span>' : ''}<br><em>Isolated Objective:</em> ${currentSS.task}
+                        </div>`;
             case "review":
-                return "Complete outstanding work. Processing all items assigned throughout the evening.";
+                let reviewContent = "Review tuition items, structure assignments, and clear any backlogs.";
+                const delays = Object.keys(appState.pushedTasks);
+                if (delays.length > 0) {
+                    reviewContent += "<br><span style='color:var(--warning); font-weight:bold;'>⚠️ Active Backlog Nodes to Clear:</span>";
+                    delays.forEach(dId => {
+                        const originalSlot = generalSchedule.find(s => s.id === dId);
+                        reviewContent += `<br>• Pending execution: ${originalSlot ? originalSlot.label : dId}`;
+                    });
+                }
+                return reviewContent;
             default:
                 return "";
         }
@@ -221,7 +281,7 @@
                 <div class="card-header">
                     <span class="time-badge">${slot.start} - ${slot.end}</span>
                     ${isPushed ? `<span class="status-badge">⚠️ Delayed</span>` : ''}
-                    ${isDone ? `<span class="status-badge" style="color:var(--accent)">✓ Done</span>` : ''}
+                    ${isDone ? `<span class="status-badge" style="color:var(--accent)">✓ Resolved</span>` : ''}
                 </div>
                 <div class="task-text">${slot.label}</div>
                 <div class="task-details">${getSlotDynamicContent(slot.id)}</div>
@@ -236,21 +296,19 @@
         });
     }
 
-    // Reset daily logs at midnight automatically
     function checkMidnightReset() {
         const now = new Date();
         if (now.getHours() === 0 && now.getMinutes() === 0) {
             appState.completedToday = {};
+            appState.pushedTasks = {};
             saveState();
             renderActiveUI();
         }
     }
 
-    // Timers running dynamically in background
-    setInterval(checkTimers, 60000); // Check time match every minute
+    setInterval(checkTimers, 60000);
     setInterval(checkMidnightReset, 60000);
 
-    // Run immediately on page open
     renderActiveUI();
 </script>
 
