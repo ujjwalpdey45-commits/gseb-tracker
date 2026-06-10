@@ -3,343 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSEB Class X Reminder App</title>
     
-    <title>GSEB Class X Smart Tracker</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <meta name="theme-color" content="#4a90e2">
+    <link rel="stylesheet" href="style.css">
+    
     <style>
-        :root {
-            --primary: #4a90e2;
-            --bg: #f4f7f6;
-            --card-bg: #ffffff;
-            --text: #333333;
-            --accent: #2ecc71;
-            --warning: #e67e22;
-            --danger: #e74c3c;
-        }
-        .icon {
-    display: inline-block; /* Allows the icon to hold a width and height */
-    width: 20px;           /* Adjust size as needed */
-    height: 20px;          /* Adjust size as needed */
-            color: #4CAF50; /* Example: A nice study-green color */
-}
-
-        * { box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
             margin: 0;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: var(--card-bg);
             padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        h1 { text-align: center; color: var(--primary); margin: 0 0 5px 0; font-size: 1.5rem; }
-        .subtitle { text-align: center; color: #777; margin-bottom: 20px; font-size: 0.85rem; }
-        
-        .task-list { display: flex; flex-direction: column; gap: 12px; }
-        
-        .task-card {
-            background: #f9f9f9;
-            border-left: 5px solid var(--primary);
+        .app-container {
+            max-width: 600px;
+            background: #ffffff;
+            margin: 30px auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* App Header Layout aligning Title and icon.png */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .app-icon {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 10px;
+            background-color: #e2e8f0; /* Fallback background if image is still caching */
+        }
+
+        .app-title {
+            font-size: 24px;
+            margin: 0;
+            color: #2d3748;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Chapters Layout styling */
+        .chapters-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .chapter-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: #f8fafc;
+            margin-bottom: 8px;
             border-radius: 8px;
-            padding: 14px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
         }
-        
-        .task-card.pushed { border-left-color: var(--warning); background: #fff9f5; }
-        .task-card.completed { border-left-color: var(--accent); background: #f0fdf4; opacity: 0.7; }
-        
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .time-badge { background: #eef2f7; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; }
-        .status-badge { font-size: 0.75rem; font-weight: bold; color: var(--warning); }
-        
-        .task-text { font-size: 0.95rem; font-weight: bold; margin-bottom: 6px; }
-        .task-details { font-size: 0.85rem; color: #666; line-height: 1.4; }
-        
-        .btn-group { display: flex; gap: 8px; margin-top: 15px; }
-        .action-btn {
-            flex: 1; padding: 10px; border: none; border-radius: 6px; 
-            font-size: 0.85rem; font-weight: bold; cursor: pointer;
+
+        .chapter-item:hover {
+            background-color: #edf2f7;
         }
-        .btn-yes { background: var(--accent); color: white; }
-        .btn-no { background: var(--warning); color: white; }
-        
-        .master-controls { margin-top: 25px; text-align: center; }
-        .setup-btn { background: #e0e0e0; padding: 12px; border: none; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; }
-        
-        .firepower-badge {
-            background: var(--danger);
-            color: white;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            font-weight: bold;
-            margin-left: 6px;
+
+        .chapter-label {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .chapter-checkbox {
+            width: 18px;
+            height: 18px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #4CAF50; /* Green theme accent for completed metrics */
+        }
+
+        /* Completed State Classes handled by JS */
+        .chapter-item.completed {
+            opacity: 0.5;
+            text-decoration: line-through;
+            background-color: #e2e8f0;
+            border-color: #cbd5e1;
         }
     </style>
 </head>
 <body>
-<img src="icon.png" alt="App Icon" class="app-icon">
-<div class="container">
-    <h1>GSEB Class X AI Tracker</h1>
-    <div class="subtitle" id="dateDisplay">Loading tracking timeline...</div>
-    
-    <div class="task-list" id="taskList"></div>
 
-    <div class="master-controls">
-        <button class="setup-btn" onclick="initPermissions()">🔔 Enable Audio & Watch Alerts</button>
+    <div class="app-container">
+        
+        <header class="app-header">
+            <img src="icon.png" alt="App Icon" class="app-icon">
+            <h1 class="app-title">GSEB Class X Reminder</h1>
+        </header>
+        
+        <p class="subtitle">Track your science curriculum progress dynamically</p>
+
+        <ul class="chapters-list">
+            
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 6: Control and Coordination">
+                    <span><strong>Chapter 6:</strong> Control and Coordination</span>
+                </label>
+            </li>
+
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 7: How do Organisms Reproduce?">
+                    <span><strong>Chapter 7:</strong> How do Organisms Reproduce?</span>
+                </label>
+            </li>
+
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 8: Heredity">
+                    <span><strong>Chapter 8:</strong> Heredity</span>
+                </label>
+            </li>
+
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 9: Light - Reflection and Refraction">
+                    <span><strong>Chapter 9:</strong> Light - Reflection and Refraction</span>
+                </label>
+            </li>
+
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 10: The Human Eye and the Colourful World">
+                    <span><strong>Chapter 10:</strong> The Human Eye and the Colourful World</span>
+                </label>
+            </li>
+
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 11: Electricity">
+                    <span><strong>Chapter 11:</strong> Electricity</span>
+                </label>
+            </li>
+
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 12: Magnetic Effects of Electric Current">
+                    <span><strong>Chapter 12:</strong> Magnetic Effects of Electric Current</span>
+                </label>
+            </li>
+
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 13: Our Environment">
+                    <span><strong>Chapter 13:</strong> Our Environment</span>
+                </label>
+            </li>
+
+        </ul>
     </div>
-</div>
 
-<script>
-    // Social Science Rotator Pool - Heavyweight history timelines/maps run with double occurrence frequency
-    const socialScienceSyllabus = [
-        { ch: "SS Ch 20", title: "Social Problems & Challenges", task: "Analyze structural differences between Rebellion and Terrorism metrics.", highFirepower: false },
-        { ch: "SS Ch 20", title: "Social Problems (Casteism Focus)", task: "🔥 CRITICAL FOCUS: Study constitutional articles (Art 17, 25, 46) addressing untouchability and minority protections.", highFirepower: true },
-        { ch: "SS Ch 1", title: "Heritage of India", task: "Review cultural assets, Aryan vs Dravidian ancestral pathways, and historical geography parameters.", highFirepower: false },
-        { ch: "SS Ch 1", title: "Heritage (Map Identification)", task: "🔥 MAP ISOLATION PRACTICE: Mark out core ancient cultural clusters and local Gujarat heritage sites on your baseline physical grid.", highFirepower: true },
-        { ch: "SS Ch 13", title: "Manufacturing Industries", task: "Track economic outputs of cotton textile clusters, Silicon Valley developments, and environmental controls.", highFirepower: false },
-        { ch: "SS Ch 17", title: "Poverty & Unemployment Challenges", task: "🔥 CHRONOLOGY / DATA LOCK: Memorize BPL qualitative benchmarks, Maa Annapurna Yojna data points, and alleviation strategy features.", highFirepower: true },
-        { ch: "SS Ch 15", title: "Economic Development", task: "Differentiate between Market Systems, Socialist Systems, and India's Mixed framework.", highFirepower: false },
-        { ch: "SS Ch 21", title: "Social Change", task: "Study legal awareness value setups, consumer protection laws, and structural lifestyle impacts.", highFirepower: false }
-    ];
+    <script>
+        // Target all chapter checkbox elements
+        const checkboxes = document.querySelectorAll('.chapter-checkbox');
 
-    // Mathematics Rotator Pool - Deeply adjusted to repeat proofs, word-problem mechanics, and compound shapes frequently
-    const mathSyllabus = [
-        { ch: "Math Ch 1", title: "Real Numbers (Irrationality Proofs)", task: "🔥 THEOREM ISOLATION: Write down full contradiction proofs for √5 and 3+2√5 step-by-step. Focus on coprime variables logic.", highFirepower: true },
-        { ch: "Math Ch 2", title: "Polynomials (Zeroes & Coefficients)", task: "Find zeroes of quadratic expressions and map out coordinate points crossing the X-axis visually.", highFirepower: false },
-        { ch: "Math Ch 12", title: "Surface Areas & Volumes (Combined Solids)", task: "🔥 WORD PROBLEM ALGEBRA: Deconstruct word problems combining hemispheres capped onto cylinder shafts. Isolate radius variable tracking.", highFirepower: true },
-        { ch: "Math Ch 12", title: "Surface Areas & Volumes (Mass Equations)", task: "🔥 HEAVY CALCULATION: Solve multi-step cylinder surmounting problems (e.g., iron pole problems) and process 1cm³ = 8g conversions.", highFirepower: true },
-        { ch: "Math Ch 11", title: "Areas Related to Circles (Sectors)", task: "Apply θ/360 × πR² equations to calculate minor vs major sweeping designs.", highFirepower: false },
-        { ch: "Math Ch 13", title: "Statistics (Mean Strategies)", task: "Solve grouped dataset averages using Direct, Assumed Mean, or Step-Deviation frameworks.", highFirepower: false },
-        { ch: "Math Ch 13", title: "Statistics (Median Curve Ogives)", task: "🔥 METHOD PRACTICE: Plot cumulative frequency grids and determine precise median values from graph intersection planes.", highFirepower: true },
-        { ch: "Math Ch 14", title: "Probability", task: "Compute elementary outcome fractions for fair coin tosses, unbiased dice rolls, and standard card groups.", highFirepower: false }
-    ];
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const parentRow = this.closest('.chapter-item');
+                const chapterTitle = this.getAttribute('data-chapter');
 
-    // Science Rotator Pool - Highly reinforced for Organic Nomenclature, Physics sign conventions, and complex Bio structures
-    const scienceSyllabus = [
-        { ch: "Sci Ch 4", title: "Carbon & Compounds (Nomenclature)", task: "🔥 ORGANIC ISOLATION: Draw structural formula maps for functional groups (Alcohols, Aldehydes, Ketones). Practice naming conventions.", highFirepower: true },
-        { ch: "Sci Ch 1", title: "Chemical Reactions & Equations", task: "Practice balancing intricate skeletal equations and classifying redox pathways.", highFirepower: false },
-        { ch: "Sci Ch 9", title: "Light (Mirror/Lens Formula Sign Conventions)", task: "🔥 PHYSICS NUMERICAL PRACTICE: Practice object distance (u) and image distance (v) signs. Memorize lens magnification metrics.", highFirepower: true },
-        { ch: "Sci Ch 9", title: "Light (Ray Diagrams)", task: "🔥 PHYSICS DIAGRAM DRAWING: Sketch path geometries for concave mirrors and convex lenses at different focal intervals.", highFirepower: true },
-        { ch: "Sci Ch 5", title: "Life Processes (Human Anatomy Pathways)", task: "🔥 BIOLOGY ISOLATION: Trace complete biochemical pathways through the Human Circulatory loop and structural Nephron filter units.", highFirepower: true },
-        { ch: "Sci Ch 2", title: "Acids, Bases & Salts", task: "Review chemical properties of salts, pH variances, and production mechanics for Baking Soda and Plaster of Paris.", highFirepower: false },
-        { ch: "Sci Ch 11", title: "Electricity (Circuit Numericals)", task: "🔥 PHYSICS CALCULATIONS: Solve series vs parallel equivalent resistance networks using Ohm's Law and Joule's Heating equation.", highFirepower: true },
-        { ch: "Sci Ch 6", title: "Control & Coordination", task: "Trace reflex arcs, map out functional human brain sections, and memorize key endocrine hormones.", highFirepower: false }
-    ];
-
-    const languageSyllabus = [
-        "Languages: Complete reading and structural comprehension tracking for your scheduled textbook prose items.",
-        "Languages / Vyakaran: Review targeted composition formats, structural punctuation rules, and prose summary writeups."
-    ];
-
-    const generalSchedule = [
-        { id: "morning", start: "06:00", end: "07:15", label: "Morning Learning Session" },
-        { id: "tuition1", start: "15:00", end: "16:30", label: "Tuition Afternoon Batch" },
-        { id: "tuition2", start: "17:00", end: "19:00", label: "Tuition Evening Batch" },
-        { id: "selfstudy", start: "19:45", end: "21:00", label: "Self-Study Focus Matrix" },
-        { id: "review", start: "21:45", end: "22:45", label: "Night Review & Backlog Resolution" }
-    ];
-
-    // Persistent State Engine Tracking Parameters
-    let appState = JSON.parse(localStorage.getItem('gseb_smart_state_v2')) || {
-        ssIndex: 0,
-        mathIndex: 0,
-        scienceIndex: 0,
-        langIndex: 0,
-        completedToday: {},
-        pushedTasks: {}
-    };
-
-    function saveState() {
-        localStorage.setItem('gseb_smart_state_v2', JSON.stringify(appState));
-    }
-
-    function initPermissions() {
-        if ("Notification" in window) {
-            Notification.requestPermission().then(perm => {
-                if(perm === "granted") {
-                    speak("Tracking matrix reconfigured. High firepower optimization and isolation slots are now online.");
-                    new Notification("GSEB Matrix Adjusted", { body: "Weak points isolated with 2x frequency loops!" });
+                if (this.checked) {
+                    // Confirmation dialogue acts as a safety shield against accidental clicks
+                    const confirmAction = confirm(`Mark "${chapterTitle}" as fully completed?`);
+                    
+                    if (confirmAction) {
+                        // Apply the completed design paradigm
+                        parentRow.classList.add('completed');
+                    } else {
+                        // Undo/Restore active state if clicked accidentally
+                        this.checked = false;
+                    }
+                } else {
+                    // Naturally restore state if student consciously unchecks a box later
+                    parentRow.classList.remove('completed');
                 }
             });
-        }
-    }
-
-    function speak(text) {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            let msg = new SpeechSynthesisUtterance(text);
-            msg.rate = 0.95;
-            window.speechSynthesis.speak(msg);
-        }
-    }
-
-    function checkTimers() {
-        const now = new Date();
-        const currentTimeString = now.toTimeString().substring(0, 5);
-        document.getElementById('dateDisplay').innerText = now.toDateString() + " | Firepower Optimization Live";
-
-        generalSchedule.forEach(slot => {
-            if (currentTimeString === slot.end && !appState.completedToday[slot.id]) {
-                triggerWindowPrompt(slot);
-            }
         });
-    }
-
-    function triggerWindowPrompt(slot) {
-        const textMsg = `Tracking block finished for ${slot.label}. Did you finish the allocated blueprint targets?`;
-        speak(textMsg);
-        
-        if ("Notification" in window && Notification.permission === "granted") {
-            new Notification(`${slot.label} Block Concluded`, { body: "Log progress data to advance syllabus tracks cleanly." });
-        }
-    }
-
-    function handleTaskAction(slotId, success) {
-        if (success) {
-            appState.completedToday[slotId] = true;
-            
-            if (slotId === "morning") {
-                appState.langIndex = (appState.langIndex + 1) % languageSyllabus.length;
-            }
-            if (slotId === "selfstudy") {
-                // Shift indices forward on check-off
-                appState.ssIndex = (appState.ssIndex + 1) % socialScienceSyllabus.length;
-                appState.mathIndex = (appState.mathIndex + 1) % mathSyllabus.length;
-                appState.scienceIndex = (appState.scienceIndex + 1) % scienceSyllabus.length;
-            }
-            
-            delete appState.pushedTasks[slotId];
-            speak("Milestone captured. Moving to next strategic node.");
-        } else {
-            appState.pushedTasks[slotId] = true;
-            speak("Session logged as incomplete. Shifting structural targets to the late night recovery block.");
-        }
-        saveState();
-        renderActiveUI();
-    }
-
-    function getSlotDynamicContent(slotId) {
-        const currentSS = socialScienceSyllabus[appState.ssIndex];
-        const currentMath = mathSyllabus[appState.mathIndex];
-        const currentSci = scienceSyllabus[appState.scienceIndex];
-        
-        switch(slotId) {
-            case "morning":
-                return `<strong>Early Language Track:</strong><br>• ${languageSyllabus[appState.langIndex]}`;
-            case "tuition1":
-                return "Consolidate active equations and catalog template worksheets issued during your first batch.";
-            case "tuition2":
-                return "Structure note entries, review practice proofs, and complete assignments assigned in your evening classes.";
-            case "selfstudy":
-                return `<strong>Tonight's Strategic High-Firepower Split:</strong><br>
-                        <div style="margin-top:5px; padding-left:5px; border-left:3px solid #3498db;">
-                            🧬 <strong>${currentSci.ch}: ${currentSci.title}</strong> ${currentSci.highFirepower ? '<span class="firepower-badge">🔥 High Firepower</span>' : ''}<br><em>Isolated Objective:</em> ${currentSci.task}
-                        </div>
-                        <div style="margin-top:8px; padding-left:5px; border-left:3px solid #2ecc71;">
-                            📐 <strong>${currentMath.ch}: ${currentMath.title}</strong> ${currentMath.highFirepower ? '<span class="firepower-badge">🔥 High Firepower</span>' : ''}<br><em>Isolated Objective:</em> ${currentMath.task}
-                        </div>
-                        <div style="margin-top:8px; padding-left:5px; border-left:3px solid #e74c3c;">
-                            🌍 <strong>${currentSS.ch}: ${currentSS.title}</strong> ${currentSS.highFirepower ? '<span class="firepower-badge">🔥 High Firepower</span>' : ''}<br><em>Isolated Objective:</em> ${currentSS.task}
-                        </div>`;
-            case "review":
-                let reviewContent = "Review tuition items, structure assignments, and clear any backlogs.";
-                const delays = Object.keys(appState.pushedTasks);
-                if (delays.length > 0) {
-                    reviewContent += "<br><span style='color:var(--warning); font-weight:bold;'>⚠️ Active Backlog Nodes to Clear:</span>";
-                    delays.forEach(dId => {
-                        const originalSlot = generalSchedule.find(s => s.id === dId);
-                        reviewContent += `<br>• Pending execution: ${originalSlot ? originalSlot.label : dId}`;
-                    });
-                }
-                return reviewContent;
-            default:
-                return "";
-        }
-    }
-
-    function renderActiveUI() {
-        const listEl = document.getElementById('taskList');
-        listEl.innerHTML = '';
-
-        generalSchedule.forEach(slot => {
-            const isDone = appState.completedToday[slot.id];
-            const isPushed = appState.pushedTasks[slot.id];
-            
-            let cardClass = "task-card";
-            if (isDone) cardClass += " completed";
-            if (isPushed) cardClass += " pushed";
-
-            const card = document.createElement('div');
-            card.className = cardClass;
-            card.innerHTML = `
-                <div class="card-header">
-                    <span class="time-badge">${slot.start} - ${slot.end}</span>
-                    ${isPushed ? `<span class="status-badge">⚠️ Delayed</span>` : ''}
-                    ${isDone ? `<span class="status-badge" style="color:var(--accent)">✓ Resolved</span>` : ''}
-                </div>
-                <div class="task-text">${slot.label}</div>
-                <div class="task-details">${getSlotDynamicContent(slot.id)}</div>
-                ${!isDone ? `
-                    <div class="btn-group">
-                        <button class="action-btn btn-yes" onclick="handleTaskAction('${slot.id}', true)">Completed</button>
-                        <button class="action-btn btn-no" onclick="handleTaskAction('${slot.id}', false)">Push Down</button>
-                    </div>
-                ` : ''}
-            `;
-            listEl.appendChild(card);
-        });
-    }
-
-    function checkMidnightReset() {
-        const now = new Date();
-        if (now.getHours() === 0 && now.getMinutes() === 0) {
-            appState.completedToday = {};
-            appState.pushedTasks = {};
-            saveState();
-            renderActiveUI();
-        }
-    }
-
-    setInterval(checkTimers, 60000);
-    setInterval(checkMidnightReset, 60000);
-
-    renderActiveUI();
-    // Example logic for handling checkbox changes safely
-document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-    checkbox.addEventListener('change', function(e) {
-        if (this.checked) {
-            // Ask the student for confirmation before marking it complete
-            const confirmComplete = confirm("Mark this chapter as completed?");
-            
-            if (!confirmComplete) {
-                // If they cancel, uncheck the box immediately (Restore state)
-                this.checked = false;
-            } else {
-                // Optional: Fade out or move to a completed section
-                this.parentElement.classList.add('completed');
-            }
-        } else {
-            // If they uncheck an already completed item, it naturally restores
-            this.parentElement.classList.remove('completed');
-        }
-    });
-});
-</script>
-
+    </script>
 </body>
 </html>
