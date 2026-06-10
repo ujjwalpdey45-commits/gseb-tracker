@@ -1,192 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GSEB Class X Tracker</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#4a90e2">
-<style>
-:root {
---primary: #4a90e2;
---bg: #f4f7f6;
---card-bg: #ffffff;
---text: #333333;
---accent: #2ecc71;
-}
-* { box-sizing: border-box; }
-body {
-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-background-color: var(--bg);
-color: var(--text);
-margin: 0;
-padding: 15px;
-display: flex;
-justify-content: center;
-}
-.container {
-width: 100%;
-max-width: 500px;
-background: var(--card-bg);
-padding: 20px;
-border-radius: 16px;
-box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-margin-top: 10px;
-}
-h1 {
-text-align: center;
-color: var(--primary);
-margin: 0 0 5px 0;
-font-size: 1.6rem;
-}
-.subtitle {
-text-align: center;
-color: #777;
-margin-bottom: 20px;
-font-size: 0.9rem;
-}
-.task-list {
-display: flex;
-flex-direction: column;
-gap: 12px;
-}
-.task-item {
-display: flex;
-align-items: center;
-padding: 14px;
-background: #f9f9f9;
-border-left: 5px solid var(--primary);
-border-radius: 8px;
-transition: all 0.2s ease;
-}
-.task-item.completed {
-border-left-color: var(--accent);
-background: #f0fdf4;
-opacity: 0.65;
-}
-.task-item.completed span {
-text-decoration: line-through;
-color: #777;
-}
-.time-badge {
-background: #eef2f7;
-padding: 5px 8px;
-border-radius: 6px;
-font-size: 0.75rem;
-font-weight: bold;
-margin-right: 12px;
-color: #555;
-min-width: 95px;
-text-align: center;
-}
-.task-text {
-flex-grow: 1;
-font-size: 0.95rem;
-line-height: 1.3;
-}
-.audio-btn {
-background: none;
-border: none;
-font-size: 1.2rem;
-cursor: pointer;
-margin-right: 10px;
--webkit-tap-highlight-color: transparent;
-}
-input[type="checkbox"] {
-width: 22px;
-height: 22px;
-cursor: pointer;
-accent-color: var(--accent);
-}
-.btn-group {
-display: flex;
-gap: 10px;
-margin-top: 25px;
-}
-.action-btn {
-flex: 1;
-padding: 14px;
-border: none;
-border-radius: 8px;
-font-size: 0.95rem;
-font-weight: bold;
-cursor: pointer;
-}
-.reset-btn { background: var(--primary); color: white; }
-.noti-btn { background: #e0e0e0; color: #333; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSEB Class X Smart Tracker</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4a90e2">
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --accent: #2ecc71;
+            --warning: #e67e22;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h1 { text-align: center; color: var(--primary); margin: 0 0 5px 0; font-size: 1.5rem; }
+        .subtitle { text-align: center; color: #777; margin-bottom: 20px; font-size: 0.85rem; }
+        
+        .task-list { display: flex; flex-direction: column; gap: 12px; }
+        
+        .task-card {
+            background: #f9f9f9;
+            border-left: 5px solid var(--primary);
+            border-radius: 8px;
+            padding: 14px;
+        }
+        
+        .task-card.pushed { border-left-color: var(--warning); background: #fff9f5; }
+        .task-card.completed { border-left-color: var(--accent); background: #f0fdf4; opacity: 0.7; }
+        
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .time-badge { background: #eef2f7; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; }
+        .status-badge { font-size: 0.75rem; font-weight: bold; color: var(--warning); }
+        
+        .task-text { font-size: 0.95rem; font-weight: bold; margin-bottom: 6px; }
+        .task-details { font-size: 0.85rem; color: #666; line-height: 1.4; }
+        
+        .btn-group { display: flex; gap: 8px; margin-top: 15px; }
+        .action-btn {
+            flex: 1; padding: 10px; border: none; border-radius: 6px; 
+            font-size: 0.85rem; font-weight: bold; cursor: pointer;
+        }
+        .btn-yes { background: var(--accent); color: white; }
+        .btn-no { background: var(--warning); color: white; }
+        
+        .master-controls { margin-top: 25px; text-align: center; }
+        .setup-btn { background: #e0e0e0; padding: 12px; border: none; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; }
+    </style>
 </head>
 <body>
+
 <div class="container">
-<h1>GSEB Class X Tracker</h1>
-<div class="subtitle">Daily Routine & Smart Reminders</div>
+    <h1>GSEB Class X AI Tracker</h1>
+    <div class="subtitle" id="dateDisplay">Loading tracking timeline...</div>
+    
+    <div class="task-list" id="taskList"></div>
 
-<div class="task-list" id="taskList"></div>
-<div class="btn-group">
-<button class="action-btn noti-btn" onclick="requestNotificationPermission()">🔔 Allow Watch Alerts</button>
-<button class="action-btn reset-btn" onclick="resetTasks()">Reset Tasks</button>
+    <div class="master-controls">
+        <button class="setup-btn" onclick="initPermissions()">🔔 Enable Audio & Watch Alerts</button>
+    </div>
 </div>
-</div>
+
 <script>
-const schedule = [
-{ time: "06:00 - 07:15 AM", text: "Morning Session: Chemistry Reactions and Language Textbooks" },
-{ time: "03:00 - 04:30 PM", text: "Tuition Batch One: Take Active Notes" },
-{ time: "05:00 - 07:00 PM", text: "Tuition Batch Two: Stay Focused" },
-{ time: "07:45 - 09:00 PM", text: "Self Study: Mathematics Practice and Social Science" },
-{ time: "09:45 - 10:45 PM", text: "Tuition Review: Complete Day's Homework" }
-];
-let taskStates = JSON.parse(localStorage.getItem('gseb_tasks')) || new Array(schedule.length).fill(false);
-function renderTasks() {
-const listEl = document.getElementById('taskList');
-listEl.innerHTML = '';
-schedule.forEach((task, index) => {
-const isChecked = taskStates[index];
-const item = document.createElement('div');
-item.className = `task-item ${isChecked ? 'completed' : ''}`;
+    // Automated Chapter Syllabus Rotator (GSEB English Medium)
+    const chemistrySyllabus = [
+        "Ch 1: Chemical Reactions and Equations (Types & Balancing)",
+        "Ch 1: Chemical Reactions (Corrosion, Rancidity & Activity Boxes)",
+        "Ch 2: Acids, Bases and Salts (Properties & pH Scale)",
+        "Ch 2: Acids, Bases and Salts (Important Chemical Compounds)",
+        "Ch 3: Metals and Non-metals (Physical & Chemical Properties)",
+        "Ch 3: Metals and Non-metals (Extraction & Metallurgy)",
+        "Ch 4: Carbon and its Compounds (Bonding & Homologous Series)",
+        "Ch 4: Carbon and its Compounds (Functional Groups & Saponification)"
+    ];
 
-item.innerHTML = `
-<div class="time-badge">${task.time}</div>
-<button class="audio-btn" onclick="speakText('${task.text}')">🔊</button>
-<div class="task-text"><span>${task.text}</span></div>
-<input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTask(${index})">
-`;
-listEl.appendChild(item);
-});
-}
-function toggleTask(index) {
-taskStates[index] = !taskStates[index];
-localStorage.setItem('gseb_tasks', JSON.stringify(taskStates));
-renderTasks();
-}
-function speakText(phrase) {
-if ('speechSynthesis' in window) {
-window.speechSynthesis.cancel(); // Stop any current speaking
-const utterance = new SpeechSynthesisUtterance(phrase);
-utterance.rate = 0.9; // Slightly slower for clear instruction
-window.speechSynthesis.speak(utterance);
-} else {
-alert("Speech synthesis not supported on this device.");
-}
-}
-function requestNotificationPermission() {
-if (!("Notification" in window)) {
-alert("This browser does not support desktop notification");
-return;
-}
-Notification.requestPermission().then(permission => {
-if (permission === "granted") {
-new Notification("GSEB Tracker", { body: "Reminders are now paired to your device and watch!" });
-}
-});
-}
-function resetTasks() {
-if(confirm("Reset checkboxes for tomorrow?")) {
-taskStates = new Array(schedule.length).fill(false);
-localStorage.setItem('gseb_tasks', JSON.stringify(taskStates));
-renderTasks();
-}
-}
-renderTasks();
+    const languageSyllabus = [
+        "Gujarati: Prose Chapter Reading & Vocabulary",
+        "Gujarati: Vyakaran (Jodani, Samas & Sandhi)",
+        "Gujarati: Poetry Analysis & Author Introduction",
+        "Hindi: Nibandh & Patra Lekhan Formats",
+        "Hindi: Prose Chapter Summary & Text Exercises",
+        "Hindi: Vyakaran & Muhavre Practice"
+    ];
+
+    const generalSchedule = [
+        { id: "morning", start: "06:00", end: "07:15", label: "Morning Session" },
+        { id: "tuition1", start: "15:00", end: "16:30", label: "Tuition Batch 1" },
+        { id: "tuition2", start: "17:00", end: "19:00", label: "Tuition Batch 2" },
+        { id: "selfstudy", start: "19:45", end: "21:00", label: "Self-Study Practice" },
+        { id: "review", start: "21:45", end: "22:45", label: "Tuition Review & Homework" }
+    ];
+
+    // State Tracking
+    let appState = JSON.parse(localStorage.getItem('gseb_smart_state')) || {
+        chemIndex: 0,
+        langIndex: 0,
+        completedToday: {},
+        pushedTasks: {}
+    };
+
+    function saveState() {
+        localStorage.setItem('gseb_smart_state', JSON.stringify(appState));
+    }
+
+    function initPermissions() {
+        if ("Notification" in window) {
+            Notification.requestPermission().then(perm => {
+                if(perm === "granted") {
+                    speak("Smart voice and smartwatch notifications enabled.");
+                    new Notification("GSEB Assistant", { body: "Automation active until March examinations!" });
+                }
+            });
+        }
+    }
+
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            let msg = new SpeechSynthesisUtterance(text);
+            msg.rate = 0.95;
+            window.speechSynthesis.speak(msg);
+        }
+    }
+
+    function checkTimers() {
+        const now = new Date();
+        const currentTimeString = now.toTimeString().substring(0, 5); // "HH:MM"
+        document.getElementById('dateDisplay').innerText = now.toDateString() + " | Active Monitoring";
+
+        generalSchedule.forEach(slot => {
+            // Trigger confirmation prompt right at the end of a session window
+            if (currentTimeString === slot.end && !appState.completedToday[slot.id]) {
+                triggerWindowPrompt(slot);
+            }
+        });
+    }
+
+    function triggerWindowPrompt(slot) {
+        const textMsg = `Time is up for your ${slot.label}. Did you complete this session's syllabus target?`;
+        speak(textMsg);
+        
+        if ("Notification" in window && Notification.permission === "granted") {
+            new Notification(`${slot.label} Ended`, { body: "Tap to confirm if completed or push forward." });
+        }
+    }
+
+    function handleTaskAction(slotId, success) {
+        if (success) {
+            appState.completedToday[slotId] = true;
+            if (slotId === "morning") {
+                // Cycle index to change topic automatically tomorrow
+                appState.chemIndex = (appState.chemIndex + 1) % chemistrySyllabus.length;
+                appState.langIndex = (appState.langIndex + 1) % languageSyllabus.length;
+            }
+            delete appState.pushedTasks[slotId];
+            speak("Excellent progress. Target archived. Next topic queued for tomorrow.");
+        } else {
+            // Push task down to night block or post-session
+            appState.pushedTasks[slotId] = "Pushed to review block";
+            speak("Task logged as incomplete. Pushed down to the late night review slot.");
+        }
+        saveState();
+        renderActiveUI();
+    }
+
+    function getSlotDynamicContent(slotId) {
+        switch(slotId) {
+            case "morning":
+                return `<strong>Today's Automated Targets:</strong><br>• Chemistry: ${chemistrySyllabus[appState.chemIndex]}<br>• Languages: ${languageSyllabus[appState.langIndex]}`;
+            case "tuition1":
+                return "Review notes taken dynamically during today's Hindi/Gujarati syllabus progression.";
+            case "tuition2":
+                return "Process Chemistry chemical properties and assignment items completed today.";
+            case "selfstudy":
+                return "<strong>Today's Exercise Target:</strong> Solve 10 designated Textbook problems in Mathematics or review 1 Social Science Blueprint concept.";
+            case "review":
+                return "Complete outstanding work. Processing all items assigned throughout the evening.";
+            default:
+                return "";
+        }
+    }
+
+    function renderActiveUI() {
+        const listEl = document.getElementById('taskList');
+        listEl.innerHTML = '';
+
+        generalSchedule.forEach(slot => {
+            const isDone = appState.completedToday[slot.id];
+            const isPushed = appState.pushedTasks[slot.id];
+            
+            let cardClass = "task-card";
+            if (isDone) cardClass += " completed";
+            if (isPushed) cardClass += " pushed";
+
+            const card = document.createElement('div');
+            card.className = cardClass;
+            card.innerHTML = `
+                <div class="card-header">
+                    <span class="time-badge">${slot.start} - ${slot.end}</span>
+                    ${isPushed ? `<span class="status-badge">⚠️ Delayed</span>` : ''}
+                    ${isDone ? `<span class="status-badge" style="color:var(--accent)">✓ Done</span>` : ''}
+                </div>
+                <div class="task-text">${slot.label}</div>
+                <div class="task-details">${getSlotDynamicContent(slot.id)}</div>
+                ${!isDone ? `
+                    <div class="btn-group">
+                        <button class="action-btn btn-yes" onclick="handleTaskAction('${slot.id}', true)">Completed</button>
+                        <button class="action-btn btn-no" onclick="handleTaskAction('${slot.id}', false)">Push Down</button>
+                    </div>
+                ` : ''}
+            `;
+            listEl.appendChild(card);
+        });
+    }
+
+    // Reset daily logs at midnight automatically
+    function checkMidnightReset() {
+        const now = new Date();
+        if (now.getHours() === 0 && now.getMinutes() === 0) {
+            appState.completedToday = {};
+            saveState();
+            renderActiveUI();
+        }
+    }
+
+    // Timers running dynamically in background
+    setInterval(checkTimers, 60000); // Check time match every minute
+    setInterval(checkMidnightReset, 60000);
+
+    // Run immediately on page open
+    renderActiveUI();
 </script>
+
 </body>
 </html>
