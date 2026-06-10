@@ -318,6 +318,26 @@
     setInterval(checkMidnightReset, 60000);
 
     renderActiveUI();
+    // Example logic for handling checkbox changes safely
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function(e) {
+        if (this.checked) {
+            // Ask the student for confirmation before marking it complete
+            const confirmComplete = confirm("Mark this chapter as completed?");
+            
+            if (!confirmComplete) {
+                // If they cancel, uncheck the box immediately (Restore state)
+                this.checked = false;
+            } else {
+                // Optional: Fade out or move to a completed section
+                this.parentElement.classList.add('completed');
+            }
+        } else {
+            // If they uncheck an already completed item, it naturally restores
+            this.parentElement.classList.remove('completed');
+        }
+    });
+});
 </script>
 
 </body>
