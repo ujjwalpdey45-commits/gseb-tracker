@@ -17,7 +17,7 @@
         }
 
         .app-container {
-            max-width: 600px;
+            max-width: 650px;
             background: #ffffff;
             margin: 30px auto;
             padding: 25px;
@@ -25,7 +25,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
-        /* FIXED: Changed to vertical block layout so the icon stays centered above the text */
+        /* FIXED: Layout parameters constrained to prevent icon alignment distortion */
         .app-header {
             display: flex;
             flex-direction: column; 
@@ -38,7 +38,7 @@
             text-align: center;
         }
 
-        /* FIXED: Enforced explicit width/height boundaries to override unscaled source images */
+        /* FIXED: Enforced explicit height and width boundaries to override source scale issues */
         .app-icon {
             width: 64px !important;
             height: 64px !important;
@@ -46,7 +46,7 @@
             max-height: 64px;
             object-fit: cover;
             border-radius: 14px;
-            background-color: #e2e8f0; /* Fallback placeholder block while image resolves */
+            background-color: #e2e8f0;
             display: block;
         }
 
@@ -60,15 +60,27 @@
             color: #718096;
             font-size: 14px;
             margin-top: -10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             text-align: center;
         }
+
+        /* Subject Section Headers */
+        .subject-heading {
+            font-size: 18px;
+            margin: 25px 0 12px 0;
+            padding-left: 8px;
+            color: #1a202c;
+            border-left: 4px solid #4a5568;
+        }
+        .subject-math { border-left-color: #3182ce; }
+        .subject-science { border-left-color: #38a169; }
+        .subject-social { border-left-color: #e53e3e; }
 
         /* Chapters Layout styling */
         .chapters-list {
             list-style: none;
             padding: 0;
-            margin: 0;
+            margin: 0 0 20px 0;
         }
 
         .chapter-item {
@@ -99,12 +111,16 @@
             height: 18px;
             margin-right: 15px;
             cursor: pointer;
-            accent-color: #4CAF50; /* Green theme accent for completed metrics */
+            accent-color: #3182ce;
         }
+
+        /* Subject customized checkboxes */
+        .subject-science + .chapters-list .chapter-checkbox { accent-color: #38a169; }
+        .subject-social + .chapters-list .chapter-checkbox { accent-color: #e53e3e; }
 
         /* Completed State Classes handled by JS */
         .chapter-item.completed {
-            opacity: 0.5;
+            opacity: 0.45;
             text-decoration: line-through;
             background-color: #e2e8f0;
             border-color: #cbd5e1;
@@ -120,67 +136,170 @@
             <h1 class="app-title">GSEB Class X Reminder</h1>
         </header>
         
-        <p class="subtitle">Track your science curriculum progress dynamically</p>
+        <p class="subtitle">Track your comprehensive multi-subject curriculum progress dynamically</p>
 
+        <h2 class="subject-heading subject-math">Mathematics</h2>
         <ul class="chapters-list">
-            
             <li class="chapter-item">
                 <label class="chapter-label">
-                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 6: Control and Coordination">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Math Ch 1: Real Numbers">
+                    <span><strong>Chapter 1:</strong> Real Numbers</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Math Ch 2: Polynomials">
+                    <span><strong>Chapter 2:</strong> Polynomials</span>
+                </label>
+            </li>
+        </ul>
+
+        <h2 class="subject-heading subject-science">Science</h2>
+        <ul class="chapters-list">
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 1: Chemical Reactions and Equations">
+                    <span><strong>Chapter 1:</strong> Chemical Reactions and Equations</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 2: Acids, Bases and Salts">
+                    <span><strong>Chapter 2:</strong> Acids, Bases and Salts</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 3: Metals and Non-metals">
+                    <span><strong>Chapter 3:</strong> Metals and Non-metals</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 4: Carbon and its Compounds">
+                    <span><strong>Chapter 4:</strong> Carbon and its Compounds</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 5: Life Processes">
+                    <span><strong>Chapter 5:</strong> Life Processes</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 6: Control and Coordination">
                     <span><strong>Chapter 6:</strong> Control and Coordination</span>
                 </label>
             </li>
-
             <li class="chapter-item">
                 <label class="chapter-label">
-                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 7: How do Organisms Reproduce?">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 7: How do Organisms Reproduce?">
                     <span><strong>Chapter 7:</strong> How do Organisms Reproduce?</span>
                 </label>
             </li>
-
             <li class="chapter-item">
                 <label class="chapter-label">
-                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 8: Heredity">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 8: Heredity">
                     <span><strong>Chapter 8:</strong> Heredity</span>
                 </label>
             </li>
-
             <li class="chapter-item">
                 <label class="chapter-label">
-                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 9: Light - Reflection and Refraction">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 9: Light - Reflection and Refraction">
                     <span><strong>Chapter 9:</strong> Light - Reflection and Refraction</span>
                 </label>
             </li>
-
             <li class="chapter-item">
                 <label class="chapter-label">
-                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 10: The Human Eye and the Colourful World">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 10: The Human Eye and the Colourful World">
                     <span><strong>Chapter 10:</strong> The Human Eye and the Colourful World</span>
                 </label>
             </li>
-
             <li class="chapter-item">
                 <label class="chapter-label">
-                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 11: Electricity">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 11: Electricity">
                     <span><strong>Chapter 11:</strong> Electricity</span>
                 </label>
             </li>
-
             <li class="chapter-item">
                 <label class="chapter-label">
-                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 12: Magnetic Effects of Electric Current">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 12: Magnetic Effects of Electric Current">
                     <span><strong>Chapter 12:</strong> Magnetic Effects of Electric Current</span>
                 </label>
             </li>
-
             <li class="chapter-item">
                 <label class="chapter-label">
-                    <input type="checkbox" class="chapter-checkbox" data-chapter="Chapter 13: Our Environment">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Science Ch 13: Our Environment">
                     <span><strong>Chapter 13:</strong> Our Environment</span>
                 </label>
             </li>
-
         </ul>
+
+        <h2 class="subject-heading subject-social">Social Science</h2>
+        <ul class="chapters-list">
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Social Ch 1: Heritage of India">
+                    <span><strong>Chapter 1:</strong> Heritage of India</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Social Ch 13: Manufacturing Industries">
+                    <span><strong>Chapter 13:</strong> Manufacturing Industries</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Social Ch 14: Transportation, Communication and Trade">
+                    <span><strong>Chapter 14:</strong> Transportation, Communication and Trade</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Social Ch 15: Economic Development">
+                    <span><strong>Chapter 15:</strong> Economic Development</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Social Ch 16: Economic Liberalization and Globalization">
+                    <span><strong>Chapter 16:</strong> Economic Liberalization and Globalization</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Social Ch 17: Economic Problems and Challenges: Poverty and Unemployment">
+                    <span><strong>Chapter 17:</strong> Poverty and Unemployment</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Social Ch 18: Price Rise and Consumer Awareness">
+                    <span><strong>Chapter 18:</strong> Price Rise and Consumer Awareness</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Social Ch 19: Human Development">
+                    <span><strong>Chapter 19:</strong> Human Development</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Social Ch 20: Social Problems of India and Challenges">
+                    <span><strong>Chapter 20:</strong> Social Problems of India and Challenges</span>
+                </label>
+            </li>
+            <li class="chapter-item">
+                <label class="chapter-label">
+                    <input type="checkbox" class="chapter-checkbox" data-chapter="Social Ch 21: Social Change">
+                    <span><strong>Chapter 21:</strong> Social Change</span>
+                </label>
+            </li>
+        </ul>
+
     </div>
 
     <script>
@@ -192,16 +311,16 @@
                 const chapterTitle = this.getAttribute('data-chapter');
 
                 if (this.checked) {
-                    const confirmAction = confirm(`Mark "${chapterTitle}" as fully completed?`);
+                    const confirmAction = confirm(`Mark "${chapterTitle}" as completed?`);
                     
                     if (confirmAction) {
                         parentRow.classList.add('completed');
                     } else {
-                        // Restore state to unchecked instantly if cancelled
+                        // Undo selection instantly if canceled
                         this.checked = false;
                     }
                 } else {
-                    // Manual safety restore path if unchecked down the line
+                    // Safety check to clear styling if toggled off intentionally later
                     parentRow.classList.remove('completed');
                 }
             });
