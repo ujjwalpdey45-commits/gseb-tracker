@@ -25,23 +25,29 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
-        /* App Header Layout aligning Title and icon.png */
+        /* FIXED: Changed to vertical block layout so the icon stays centered above the text */
         .app-header {
             display: flex;
+            flex-direction: column; 
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
             border-bottom: 2px solid #edf2f7;
             padding-bottom: 15px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
+        /* FIXED: Enforced explicit width/height boundaries to override unscaled source images */
         .app-icon {
-            width: 50px;
-            height: 50px;
+            width: 64px !important;
+            height: 64px !important;
+            max-width: 64px;
+            max-height: 64px;
             object-fit: cover;
-            border-radius: 10px;
-            background-color: #e2e8f0; /* Fallback background if image is still caching */
+            border-radius: 14px;
+            background-color: #e2e8f0; /* Fallback placeholder block while image resolves */
+            display: block;
         }
 
         .app-title {
@@ -110,7 +116,7 @@
     <div class="app-container">
         
         <header class="app-header">
-            <img src="icon.png" alt="App Icon" class="app-icon">
+            <img src="icon.png" alt="App Icon" class="app-icon" width="64" height="64">
             <h1 class="app-title">GSEB Class X Reminder</h1>
         </header>
         
@@ -178,7 +184,6 @@
     </div>
 
     <script>
-        // Target all chapter checkbox elements
         const checkboxes = document.querySelectorAll('.chapter-checkbox');
 
         checkboxes.forEach(checkbox => {
@@ -187,18 +192,16 @@
                 const chapterTitle = this.getAttribute('data-chapter');
 
                 if (this.checked) {
-                    // Confirmation dialogue acts as a safety shield against accidental clicks
                     const confirmAction = confirm(`Mark "${chapterTitle}" as fully completed?`);
                     
                     if (confirmAction) {
-                        // Apply the completed design paradigm
                         parentRow.classList.add('completed');
                     } else {
-                        // Undo/Restore active state if clicked accidentally
+                        // Restore state to unchecked instantly if cancelled
                         this.checked = false;
                     }
                 } else {
-                    // Naturally restore state if student consciously unchecks a box later
+                    // Manual safety restore path if unchecked down the line
                     parentRow.classList.remove('completed');
                 }
             });
